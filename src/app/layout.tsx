@@ -1,6 +1,8 @@
+import { cn } from "@/utils/cn";
+import "./globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import "./globals.css";
+import { ThemeProvider } from "./ThemeProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -11,12 +13,21 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <ThemeProvider>
+        <body
+          className={cn(
+            inter.className,
+            process.env.NODE_ENV == "development" ? "debug-screens" : "",
+          )}
+        >
+          {children}
+        </body>
+      </ThemeProvider>
     </html>
   );
 }
